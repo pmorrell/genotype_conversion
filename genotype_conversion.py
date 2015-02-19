@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-# with lots of help from Tom Kono
+# Peter L. Morrell - St. Paul, MN - 15 February 2015
+# A script to convert genotypes, here generate by Alchemy SNP calls to a count of minor
+# allele frequency 
+# Genotypes are formatted as AA AC CC and reported a 0 1 2 when A is the major allele
+# Primary function GetMajorMinor from Tom Kono
 
 from __future__ import print_function
 import sys
@@ -83,13 +87,13 @@ for snp in file_data_t[1:]:
     snp = ['1' if (x == major + minor or x == minor + major) else x for x in snp]
     geno_output.append(snp)
 
-#sample_table = zip(header, geno_output)
-#print (sample_table, sep='\n')
+#   Transpose the genotype matrix
 geno_output_t = zip(*geno_output)
+#   Print the header with SNP or locus names
 print('\t'.join(header))
+#    Print the sample name followed by genotype for each row of the data set
 for i, m in zip(sample_names, geno_output_t):
     print('\t'.join([i] + list(m)))
-#print(*geno_output_t, sep='\n')
 
     
 
