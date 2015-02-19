@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# 
+# with lots of help from Tom Kono
 
 from __future__ import print_function
 import sys
@@ -57,13 +57,14 @@ with open(sys.argv[1]) as f:
 
 # Remove header from matrix            
 header = file_data.pop(0)
+#print (header)
 
 #   Transpose so we can iterate over columns
 file_data_t = zip(*file_data)
 #   We can get sample names as the first element
 sample_names = file_data_t[0]
-
-# 
+#print(*sample_names, sep='\n')
+ 
 geno_output = []
 
 #   And iterate over columns
@@ -75,17 +76,21 @@ for snp in file_data_t[1:]:
     #   Start with minor
     #       For diagnostic purposes, print the SNP before and its minor and major states
     # print snp, minor, major
-    snp = ['0' if (x == minor*2) else x for x in snp]
+    snp = ['2' if (x == minor*2) else x for x in snp]
     #   Then major
-    snp = ['2' if (x == major*2) else x for x in snp]
+    snp = ['0' if (x == major*2) else x for x in snp]
     #   And finally the hets
     snp = ['1' if (x == major + minor or x == minor + major) else x for x in snp]
     geno_output.append(snp)
 
+#sample_table = zip(header, geno_output)
+#print (sample_table, sep='\n')
 geno_output_t = zip(*geno_output)
-#for geno in geno_output_t:
-#	print geno
-print (*geno_output_t, sep='\n')	
+print('\t'.join(header))
+for i, m in zip(sample_names, geno_output_t):
+    print('\t'.join([i] + list(m)))
+#print(*geno_output_t, sep='\n')
 
+    
 
 
