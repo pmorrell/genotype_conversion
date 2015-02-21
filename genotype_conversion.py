@@ -23,6 +23,12 @@ def GetMajorMinor(snp):
     #   And then cast to set
     #   This saves only the unique elements, i.e., the alleles
     alleles = set(all_calls)
+
+    #   Identify monomorphic SNPs
+    if (len(alleles)) < 2:
+# return a set as a string, with nonsense value
+    	return('N', list(alleles)[0])
+
     #   We want to remove any "alleles" that aren't actually bases
     #   we can do this by intersecting with the set of valid bases that we have
     #   defined above.
@@ -43,11 +49,10 @@ def GetMajorMinor(snp):
     #   this case, we just arbitrarily set them to major or minor
     #   We have to cast back to list for this since sets do not support slicing
     if minor_allele == major_allele:
-        minor_allele = list(alleles)[0]
-        major_allele = list(alleles)[1]
+       	minor_allele = list(alleles)[0]
+       	major_allele = list(alleles)[1]
     #   Return the data structure
     return(minor_allele, major_allele)
-
 
 file_data = []
 #   Read the file in line-by-line
