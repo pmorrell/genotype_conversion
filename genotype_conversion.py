@@ -23,12 +23,10 @@ def GetMajorMinor(snp):
     #   And then cast to set
     #   This saves only the unique elements, i.e., the alleles
     alleles = set(all_calls)
-
     #   Identify monomorphic SNPs
     if (len(alleles)) < 2:
 # return a set as a string, with nonsense value
     	return('N', list(alleles)[0])
-
     #   We want to remove any "alleles" that aren't actually bases
     #   we can do this by intersecting with the set of valid bases that we have
     #   defined above.
@@ -79,17 +77,21 @@ geno_output = []
 #   And iterate over columns
 for snp in file_data_t[1:]:
     snp = map(str.upper,(snp))
-    minor, major = GetMajorMinor(snp)
-    #   Unfortunately, python doesn't have an elegant way to
-    #   replace all values in a list like R does
-    #   Start with minor
-    #       For diagnostic purposes, print the SNP before and its minor and major states
-    # print snp, minor, major
-    snp = ['2' if (x == minor*2) else x for x in snp]
-    #   Then major
-    snp = ['0' if (x == major*2) else x for x in snp]
-    #   And finally the hets
-    snp = ['1' if (x == major + minor or x == minor + major) else x for x in snp]
+#   Deal with the special case where the SNP includes nothing but 'NA'    
+    if snp.count('NA') == len(snp):
+        pass
+    else:
+        minor, major = GetMajorMinor(snp)
+        #   Unfortunately, python doesn't have an elegant way to
+        #   replace all values in a list like R does
+        #   Start with minor
+        #       For diagnostic purposes, print the SNP before and its minor and major states
+        # print snp, minor, major
+        snp = ['2' if (x == minor*2) else x for x in snp]
+        #   Then major
+        snp = ['0' if (x == major*2) else x for x in snp]
+        #   And finally the hets
+        snp = ['1' if (x == major + minor or x == minor + major) else x for x in snp]
     geno_output.append(snp)
 
 #   Transpose the genotype matrix
