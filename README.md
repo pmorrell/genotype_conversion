@@ -14,3 +14,14 @@ Example datasets are provided in test.txt, test2.txt, and test3.txt.
 - Genotypes in some data files are represented as 'AA', 'AB', or 'BB'. This should generally not occur with data directly from Alchemy, but is a problem in some of our data files.
 - Datafiles with a newline ('\n') at the end of the file don't work. The genotype_conversion.py returns only the headers.
 
+
+# Quality control (QC) on SNP genotyping matrix
+
+It is often important to perform QC on a SNP data set before proceeding with analysis. 
+
+Here, the data set consists of counts of minor allele frequency. 
+
+This code permits reading in a data set, specified at the top of the code and then filters on the criteria for heterozygosity, missingness, etc.
+
+
+ 
