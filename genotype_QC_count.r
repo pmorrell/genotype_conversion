@@ -72,3 +72,35 @@ mono_rm <- which(apply(geno_dat,2,sum, na.rm = TRUE) == min_freq)
 
 geno_dat <- geno_dat[,c(-miss_rm,-het_rm,-mono_rm)]
 dim(geno_dat)
+
+
+# from here on, code for Structure file creation
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+geno_struct = geno_dat
+
+ # convert genotypes counts to integers to be used in Structure
+ # write the heterozygotes to "1"; shouldn't be many
+ toStructure <- function(dat) {
+	dat[dat == 1] <- 2
+	dat[dat == 0] <- 1
+#	dat[dat == 2] <- 2
+	dat[is.na(dat)] <- -9
+	return(dat)
+}
+
+geno_struct <- toStructure(geno_struct)
+padding <- rep(1,dim(geno_struct)[1])
+geno_struct <- cbind(padding,padding,geno_struct)
+
+write.table(geno_struct, file="~/Desktop/WBDC_SNP.stu", quote=FALSE,sep='\t')
+dim(geno_struct)
+
+# from here on, shell code for cleaning up Structure file with name padding, etc.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#perl -i.bak -pln -e 's/X11_/11_/g' ~/Desktop/WBDC_SNP.stu
+#perl -i.bak -pln -e 's/X12_/12_/g' ~/Desktop/WBDC_SNP.stu
+#perl -i.bak -pln -e 's/padding\tpadding\t//g' ~/Desktop/WBDC_SNP.stu
+
+
