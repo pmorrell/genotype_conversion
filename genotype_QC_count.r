@@ -1,13 +1,17 @@
 # R code for genotype quality control
-# Peter L. Morrell
-# 2 March 2015 - St. Louis, MO 
+# Written by Peter L. Morrell
+# Includes edits by Chaochih Liu
+# 2 March 2015 - Frontenac, MO 
 
 # read in genotyping data file to be used
 # includes row names for WBDC samples
-WBDC_geno_count <- read.delim('~/Dropbox/Documents/Work/manuscripts/barley inversions/WBDC_genotype_count.txt', row.names=1)
+WBDC_geno_count <- read.delim('~/Dropbox/Barley inversions/WBDC_genotype_count.txt', row.names=1)
+# WBDC_geno_count <- read.delim('~/Dropbox/Documents/Work/manuscripts/barley inversions/WBDC_genotype_count.txt', row.names=1)
 # read in list of samples used (or more importantly, to eliminate those that will not be used)
 # this marker dataset from Fang et al. 2014 G3 - excludes accessions putatively subject to introgression
-WBDC_284 <- read.delim('~/Dropbox/Documents/Work/manuscripts/barley inversions/Table_S1.txt',comment.char='#') 
+WBDC_284 <- read.delim('~/Dropbox/Barley Inversions/Table_S1.txt',comment.char='#') 
+# WBDC_284 <- read.delim('~/Dropbox/Documents/Work/manuscripts/barley inversions/Table_S1.txt',comment.char='#') 
+
 
 # define thresholds for missing data, heterozygous proportions, & mininimum minor allele frequency
 # remove SNPs with missing data ≥ 25% 
@@ -30,8 +34,8 @@ geno_dat <- geno_dat[row.names(geno_dat) %in% included_samples,]
 
 # function to omit columns of data that are only NA values
 all.na.omit.column <- function(dat.frame) {
-apply(dat.frame,2, function(x) all(is.na(x))) -> mask
-dat.frame[!mask] -> dat.frame
+mask <- apply(dat.frame,2, function(x) all(is.na(x)))
+dat.frame <- dat.frame[!mask]
 return(dat.frame)
 }
 
@@ -45,10 +49,9 @@ return(miss)
 # function to identify proportion of SNPs that are heterozygous
 # here they are all represented as genotype value of "1"
 hets <- function(dat) {
-dat_size <- length(na.omit(dat))
 het <- dat[dat == "1"]
 het <- length(het)
-hets_locus <- het/dat_size
+hets_locus <- het/length(na.omit(dat))
 return(hets_locus)
 }
 
@@ -77,14 +80,14 @@ dim(geno_dat)
 # from here on, code for Structure file creation
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-geno_struct = geno_dat
+# create duplicate data frame we can convert to Structure format
+geno_struct <- geno_dat
 
  # convert genotypes counts to integers to be used in Structure
- # write the heterozygotes to "1"; shouldn't be many
+ # write the heterozygotes to '1'; shouldn't be many
  toStructure <- function(dat) {
 	dat[dat == 1] <- 2
 	dat[dat == 0] <- 1
-#	dat[dat == 2] <- 2
 	dat[is.na(dat)] <- -9
 	return(dat)
 }
@@ -102,5 +105,4 @@ dim(geno_struct)
 #perl -i.bak -pln -e 's/X11_/11_/g' ~/Desktop/WBDC_SNP.stu
 #perl -i.bak -pln -e 's/X12_/12_/g' ~/Desktop/WBDC_SNP.stu
 #perl -i.bak -pln -e 's/padding\tpadding\t//g' ~/Desktop/WBDC_SNP.stu
-
 
