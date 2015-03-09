@@ -2,11 +2,24 @@
 # Peter L. Morrell - St. Paul, MN - 15 February 2015
 # A script to convert genotypes, here generate by Alchemy SNP calls to a count of minor
 # allele frequency 
-# Genotypes are formatted as AA AC CC and reported a 0 1 2 when A is the major allele
 # Primary function GetMajorMinor from Tom Kono
 
 from __future__ import print_function
 import sys
+
+Usage= """
+genotype_conversion.py - version 1
+Reads in genotype data formatted in nucleotide format (e.g., AA, AC, or CC) and returns
+genotypes as minor allele count (i.e., 0, 1, or 2)  
+
+Usage:
+    genotype_conversion.py [genotype_matrix.txt]
+"""
+
+# Expects a filename as the only argument
+if len(sys.argv) < 2:
+    print (Usage)
+    exit(1)
 
 #   Set missing data value
 missing = 'NA'
