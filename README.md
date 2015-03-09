@@ -14,6 +14,10 @@ Example datasets are provided in test.txt, test2.txt, and test3.txt.
 - Genotypes in some data files are represented as 'AA', 'AB', or 'BB'. This should generally not occur with data directly from Alchemy, but is a problem in some of our data files.
 - Datafiles with a newline ('\n') at the end of the file don't work. The genotype_conversion.py returns only the headers.
 
+- Potential additions to the script
+	- the option to process data sets with 'AA', 'AB', 'BB' genotype calls
+	- error checking for calls that don't match those in the defined set
+	- options to write to formats supported by [Plink] (http://pngu.mgh.harvard.edu/~purcell/plink/) 
 
 #Quality control (QC) on SNP genotyping matrix
 
