@@ -5,6 +5,7 @@
 # Primary function GetMajorMinor from Tom Kono
 
 from __future__ import print_function
+from __future__ import with_statement
 import sys
 
 Usage= """
@@ -67,13 +68,16 @@ def GetMajorMinor(snp):
 
 file_data = []
 #   Read the file in line-by-line
-with open(sys.argv[1]) as f:
-    for line in f:
-        #   Skip the header lines - write them out without modification
-        if line.startswith('#'):
-            sys.stdout.write(line)
-        else:
-            file_data.append(line.strip().split('\t'))
+try:
+    with open(sys.argv[1]) as f:
+        for line in f:
+            #   Skip the header lines - write them out without modification
+            if line.startswith('#'):
+                sys.stdout.write(line)
+            else:
+                file_data.append(line.strip().split('\t'))
+except IOError as ex:
+	print ("File open issue: " + ex.strerror)
 
 # Remove header from matrix            
 header = file_data.pop(0)
