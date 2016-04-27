@@ -18,7 +18,8 @@ Example datasets are provided in test.txt, test2.txt, and test3.txt.
 	- the option to process data sets with 'AA', 'AB', 'BB' genotype calls
 	- better exception handling for calls that don't match those in the defined set
 	- exception handling for loci that include more than two variants at a locus
-	- options to write to the '.ped' used for [Plink] (https://www.cog-genomics.org/plink2) genotype data
+	- options to write to the '.ped' format used for [Plink] (https://www.cog-genomics.org/plink2) genotype data
+        - this would also require a '.map' which includes SNP name and physical (or genetic) map position, which aren't in the Alchemy output currently processed 
 
 #Quality control (QC) on SNP genotyping matrix
 
